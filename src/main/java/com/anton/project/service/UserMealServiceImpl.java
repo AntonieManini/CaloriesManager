@@ -2,6 +2,7 @@ package com.anton.project.service;
 
 import com.anton.project.model.UserMeal;
 import com.anton.project.repository.UserMealRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -12,24 +13,27 @@ import java.util.Collection;
 
 @Service
 public class UserMealServiceImpl implements UserMealService {
+    @Autowired
+    private UserMealRepository repository;
+
     @Override
     public UserMeal get(int id, int userId) {
-        return null;
+        return repository.get(id, userId);
     }
 
     @Override
     public void delete(int id, int userId) {
-
+        repository.delete(id, userId);
     }
 
     @Override
     public Collection<UserMeal> getAll(int userId) {
-        return null;
+        return repository.getAll(userId);
     }
 
     @Override
     public UserMeal update(UserMeal meal, int userId) {
-        return null;
+        return repository.save(meal, userId);
     }
 
     @Override
