@@ -1,14 +1,34 @@
 package com.anton.project.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
  * Created by Anton on 17.02.16.
  */
+
+@Entity
 public class UserMeal extends BaseEntitiy {
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @Column(name="date_time", nullable = false)
     private LocalDateTime dateTime;
+
+    @NotEmpty
+    @Column(name="description", nullable = false)
     private String description;
+
+    @NotNull
+    @Range(min=10, max=5000)
+    @Column(name="calories", nullable = false)
     private Integer calories;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public UserMeal(){}

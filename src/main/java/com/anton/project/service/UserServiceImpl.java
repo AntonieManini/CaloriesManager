@@ -1,10 +1,13 @@
 package com.anton.project.service;
 
 import com.anton.project.model.User;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by Anton on 18.02.16.
  */
+
+@Service
 public class UserServiceImpl implements UserService {
     @Override
     public User save(User user) {

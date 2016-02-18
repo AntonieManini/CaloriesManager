@@ -2,12 +2,15 @@ package com.anton.project.service;
 
 import com.anton.project.model.UserMeal;
 import com.anton.project.repository.UserMealRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
 /**
  * Created by Anton on 18.02.16.
  */
+
+@Service
 public class UserMealServiceImpl implements UserMealService {
     @Override
     public UserMeal get(int id, int userId) {

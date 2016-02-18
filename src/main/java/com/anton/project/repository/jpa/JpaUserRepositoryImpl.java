@@ -2,12 +2,15 @@ package com.anton.project.repository.jpa;
 
 import com.anton.project.model.User;
 import com.anton.project.repository.UserRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by Anton on 18.02.16.
  */
+
+@Repository
 public class JpaUserRepositoryImpl implements UserRepository {
     @Override
     public User save(User user) {
