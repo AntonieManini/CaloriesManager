@@ -15,9 +15,18 @@ import java.util.Set;
  * Created by Anton on 17.02.16.
  */
 
+@NamedQueries({
+        @NamedQuery(name = User.DELETE, query=""),
+        @NamedQuery(name = User.ALL_SORTED, query = ""),
+        @NamedQuery(name = User.BY_EMAIL, query = "")
+})
 @Entity
 @Table(name="users")
 public class User extends NamedEntity {
+
+    public static final String DELETE = "User.delete";
+    public static final String ALL_SORTED = "User.getAllSorted";
+    public static final String BY_EMAIL = "User.getByEmail";
 
     @Email
     @NotEmpty

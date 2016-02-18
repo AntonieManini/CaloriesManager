@@ -12,8 +12,21 @@ import java.time.LocalDateTime;
  * Created by Anton on 17.02.16.
  */
 
+
+@NamedQueries({
+        @NamedQuery(name = UserMeal.GET, query = ""),
+        @NamedQuery(name = UserMeal.ALL_SORTED, query = ""),
+        @NamedQuery(name = UserMeal.DELETE, query = ""),
+        @NamedQuery(name = UserMeal.GET_BETWEEN, query = "")
+})
+
 @Entity
 public class UserMeal extends BaseEntitiy {
+    public static final String GET = "UserMeal.get";
+    public static final String ALL_SORTED = "UserMeal.getAll";
+    public static final String DELETE = "UserMeal.delete";
+    public static final String GET_BETWEEN = "UserMeal.getBetween";
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @Column(name="date_time", nullable = false)
     private LocalDateTime dateTime;

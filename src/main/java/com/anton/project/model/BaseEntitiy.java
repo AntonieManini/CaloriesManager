@@ -47,4 +47,8 @@ public class BaseEntitiy {
     public int hashCode() {
         return id != null ? id : 0;
     }
+
+    public boolean isNew() {
+        return id == null;
+    }
 }
