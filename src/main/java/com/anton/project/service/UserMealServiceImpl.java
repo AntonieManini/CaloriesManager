@@ -5,6 +5,8 @@ import com.anton.project.repository.UserMealRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -40,4 +42,10 @@ public class UserMealServiceImpl implements UserMealService {
     public UserMeal save(UserMeal meal, int userId) {
         return null;
     }
+
+    @Override
+    public Collection<UserMeal> getBetweenDateTimes(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
+        return null;
+    }
+
 }
