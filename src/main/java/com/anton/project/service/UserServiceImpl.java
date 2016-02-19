@@ -1,16 +1,24 @@
 package com.anton.project.service;
 
+import com.anton.project.LoggedUser;
 import com.anton.project.model.User;
 import com.anton.project.repository.UserRepository;
+import com.anton.project.to.UserTo;
+import com.anton.project.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by Anton on 18.02.16.
  */
 
-@Service
-public class UserServiceImpl implements UserService {
+@Service("userService")
+public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private UserRepository repository;
 
@@ -35,8 +43,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getAll() {
+        return repository.getAll();
+    }
+
+    @Override
     public void update(User user) {
         repository.save(user);
+    }
+
+    @Override
+    public void update(UserTo userTo) {
+        User user = get(userTo.getId());
+        repository.save(UserUtil.updateFromUser(user, userTo));
     }
 
     @Override
@@ -44,5 +63,16 @@ public class UserServiceImpl implements UserService {
         User user = get(id);
         user.setEnabled(enable);
         repository.save(user);
+    }
+
+    @Override
+    public LoggedUser loadUserByUsername(String email) throws UsernameNotFoundException {
+        User u = repository.getByEmail(email.toLowerCase());
+
+        if (u == null) {
+            throw new UsernameNotFoundException("User " + email + "is not found");
+        }
+
+        return new LoggedUser(u);
     }
 }
