@@ -18,4 +18,6 @@ public interface UserMealRepository {
     Collection<UserMeal> getAll(int userId);
 
     Collection<UserMeal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId);
+
+    UserMeal getWithUser(Integer id, Integer userId);
 }
