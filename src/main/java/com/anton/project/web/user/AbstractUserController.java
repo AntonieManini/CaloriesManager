@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Anton on 18.02.16.
  */
-public abstract class AbstractUserController {
+abstract class AbstractUserController {
 
     @Autowired
     private UserService service;
