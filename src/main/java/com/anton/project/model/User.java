@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -56,6 +57,27 @@ public class User extends NamedEntity {
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy="user")
     @OrderBy("dateTime DESC")
     private List<UserMeal> meals;
+
+    public User() {
+    }
+
+    public User(User u) {
+        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getCaloriesPerDay(), u.isEnabled(), u.getRoles());
+    }
+
+    public User(Integer id, String name, String email, String password, int caloriesPerDay, Role role, Role... roles) {
+        this(id, name, email, password, caloriesPerDay, true, EnumSet.of(role, roles));
+    }
+
+    public User(Integer id, String name, String email, String password, int caloriesPerDay, boolean enabled, Set<Role> roles) {
+        super(id, name);
+        this.email = email;
+        this.password = password;
+        this.caloriesPerDay = caloriesPerDay;
+        this.enabled = enabled;
+        this.roles = roles;
+    }
+
 
     public String getEmail() {
         return email;
