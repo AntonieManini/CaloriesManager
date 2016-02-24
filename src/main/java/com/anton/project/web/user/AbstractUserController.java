@@ -1,5 +1,6 @@
 package com.anton.project.web.user;
 
+import com.anton.project.LoggerWrapper;
 import com.anton.project.model.User;
 import com.anton.project.service.UserService;
 import com.anton.project.to.UserTo;
@@ -12,6 +13,8 @@ import java.util.List;
  * Created by Anton on 18.02.16.
  */
 abstract class AbstractUserController {
+
+    protected final LoggerWrapper LOG = LoggerWrapper.get(getClass());
 
     @Autowired
     private UserService service;

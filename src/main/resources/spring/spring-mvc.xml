@@ -7,9 +7,37 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
         >
 
-    <mvc:annotation-driven/>
+    <bean id="objectMapper" class="com.anton.project.web.json.JsonObjectMapper" factory-method="getMapper" />
 
     <context:component-scan base-package="com.anton.project.web"/>
+
+    <mvc:interceptors>
+        <bean class="com.anton.project.web.interceptor.ModelInterceptor" />
+    </mvc:interceptors>
+
+    <mvc:annotation-driven conversion-service="conversionService">
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"
+                  p:objectMapper-ref="objectMapper"/>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/plain;charset=UTF-8</value>
+                        <value>text/html;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="formatters">
+            <set>
+                <bean class="com.anton.project.util.converter.LocalTimeFormatter"/>
+                <bean class="com.anton.project.util.converter.LocalDateFormatter"/>
+            </set>
+        </property>
+    </bean>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
         p:prefix="/WEB-INF/jsp/"

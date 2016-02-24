@@ -1,6 +1,7 @@
 package com.anton.project.web.meal;
 
 import com.anton.project.LoggedUser;
+import com.anton.project.LoggerWrapper;
 import com.anton.project.model.UserMeal;
 import com.anton.project.service.UserMealService;
 import com.anton.project.to.UserMealWithExceed;
@@ -15,6 +16,9 @@ import java.util.List;
  * Created by Anton on 19.02.16.
  */
 abstract class AbstractUserMealController {
+
+    protected final LoggerWrapper LOG = LoggerWrapper.get(getClass());
+
     @Autowired
     UserMealService service;
 

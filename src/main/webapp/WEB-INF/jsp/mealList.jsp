@@ -110,5 +110,10 @@
         </div>
     </div>
 </div>
+    <script type="text/javascript" src="webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
+    <script type="text/javascript" src="webjars/datatables/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="webjars/noty/2.3.7/js/noty/packaged/jquery.noty.packaged.min.js"></script>
+    <script type="text/javascript" src="resources/js/datatablesUtil.js"></script>
+    <script type="text/javascript" src="resources/js/mealDatatables.js"></script>
 </body>
 </html>

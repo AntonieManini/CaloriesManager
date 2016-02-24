@@ -6,6 +6,8 @@ import com.anton.project.repository.UserRepository;
 import com.anton.project.to.UserTo;
 import com.anton.project.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,11 +24,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private UserRepository repository;
 
+    @CacheEvict(value = "users", allEntries = true)
     @Override
     public User save(User user) {
         return repository.save(user);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     @Override
     public void delete(int id) {
         repository.delete(id);
@@ -42,22 +46,26 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return repository.getByEmail(email);
     }
 
+    @Cacheable("users")
     @Override
     public List<User> getAll() {
         return repository.getAll();
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     @Override
     public void update(User user) {
         repository.save(user);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     @Override
     public void update(UserTo userTo) {
         User user = get(userTo.getId());
         repository.save(UserUtil.updateFromUser(user, userTo));
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     @Override
     public void enable(int id, boolean enable) {
         User user = get(id);
