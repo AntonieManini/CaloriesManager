@@ -4,13 +4,11 @@ import com.anton.project.model.User;
 import com.anton.project.to.UserTo;
 import com.anton.project.util.UserUtil;
 import com.anton.project.util.exception.ValidationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;
@@ -46,16 +44,19 @@ public class AdminAjaxController extends AbstractUserController {
         }
         status.setComplete();
 
-        if (userTo.getId() == 0) {
-            super.create(UserUtil.createFromTo(userTo));
-        }
-        else {
-            super.update(userTo);
+        try {
+            if (userTo.getId() == 0) {
+                super.create(UserUtil.createFromTo(userTo));
+            } else {
+                super.update(userTo);
+            }
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException("user with this email already present in application");
         }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public void enabled(int id, boolean enabled) {
+    public void enabled(@PathVariable("id") int id, @RequestParam("enabled") boolean enabled) {
         super.enable(id, enabled);
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
 public class DataJpaUserRepositoryImpl implements UserRepository {
     private static final Sort SORT_NAME_EMAIL = new Sort("name", "email");
     @Autowired
-    ProxyUserRepository proxy;
+    private ProxyUserRepository proxy;
 
     @Override
     public User save(User user) {
@@ -39,11 +39,7 @@ public class DataJpaUserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> getAll() {
-        return proxy.findAll();
+        return proxy.findAll(SORT_NAME_EMAIL);
     }
 
-    @Override
-    public User getWithMeals(int id) {
-        return proxy.getWithMeals(id);
-    }
 }

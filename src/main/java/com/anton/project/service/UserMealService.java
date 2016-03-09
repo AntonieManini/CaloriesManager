@@ -1,6 +1,7 @@
 package com.anton.project.service;
 
 import com.anton.project.model.UserMeal;
+import com.anton.project.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,13 +13,13 @@ import java.util.Collection;
  */
 
 public interface UserMealService {
-    UserMeal get(int id, int userId);
+    UserMeal get(int id, int userId) throws NotFoundException;
 
-    void delete(int id, int userId);
+    void delete(int id, int userId) throws NotFoundException;
 
     Collection<UserMeal> getAll(int userId);
 
-    UserMeal update(UserMeal meal, int userId);
+    UserMeal update(UserMeal meal, int userId) throws NotFoundException;
 
     UserMeal save(UserMeal meal, int userId);
 

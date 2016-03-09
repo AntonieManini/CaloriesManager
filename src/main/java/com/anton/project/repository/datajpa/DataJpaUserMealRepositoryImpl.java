@@ -22,6 +22,7 @@ public class DataJpaUserMealRepositoryImpl implements UserMealRepository {
     private ProxyUserRepository userProxy;
 
     @Override
+    @Transactional
     public UserMeal save(UserMeal userMeal, int userId) {
         if (!userMeal.isNew() && get(userMeal.getId(), userId) == null) {
             return null;
@@ -48,10 +49,5 @@ public class DataJpaUserMealRepositoryImpl implements UserMealRepository {
     @Override
     public List<UserMeal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
         return proxy.getBetween(startDate, endDate, userId);
-    }
-
-    @Override
-    public UserMeal getWithUser(Integer id, Integer userId) {
-        return proxy.getWithUser(id, userId);
     }
 }

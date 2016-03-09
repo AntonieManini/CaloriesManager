@@ -5,6 +5,8 @@ import com.anton.project.model.User;
 import com.anton.project.repository.UserRepository;
 import com.anton.project.to.UserTo;
 import com.anton.project.util.UserUtil;
+import com.anton.project.util.exception.ExceptionUtil;
+import com.anton.project.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -14,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Anton on 18.02.16.
@@ -32,18 +35,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @CacheEvict(value = "users", allEntries = true)
     @Override
-    public void delete(int id) {
-        repository.delete(id);
+    public void delete(int id) throws NotFoundException {
+        ExceptionUtil.check(repository.delete(id), id);
     }
 
     @Override
-    public User get(int id) {
-        return repository.get(id);
+    public User get(int id) throws NotFoundException {
+        return ExceptionUtil.check(repository.get(id), id);
     }
 
     @Override
     public User getByEmail(String email) {
-        return repository.getByEmail(email);
+        Objects.requireNonNull(email, "Email must not be empty");
+        return ExceptionUtil.check(repository.getByEmail(email), "email=" + email);
     }
 
     @Cacheable("users")
@@ -62,7 +66,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void update(UserTo userTo) {
         User user = get(userTo.getId());
-        repository.save(UserUtil.updateFromUser(user, userTo));
+        repository.save(UserUtil.updateFromTo(user, userTo));
     }
 
     @CacheEvict(value = "users", allEntries = true)

@@ -4,6 +4,8 @@ import com.anton.project.LoggedUser;
 import com.anton.project.to.UserTo;
 import com.anton.project.util.UserUtil;
 import com.anton.project.web.user.AbstractUserController;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -26,6 +28,7 @@ public class RootController extends AbstractUserController {
         return "redirect:meals";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String userList() {
         return "userList";
@@ -55,12 +58,15 @@ public class RootController extends AbstractUserController {
     @RequestMapping(value= "/profile", method = RequestMethod.POST)
     public String updateProfile(@Valid UserTo userTo, BindingResult result, SessionStatus status) {
         if (!result.hasErrors()) {
-            userTo.setId(LoggedUser.id());
-            super.update(userTo);
-            LoggedUser.get().update(userTo);
-            status.setComplete();
-
-            return "redirect:meals";
+            try {
+                userTo.setId(LoggedUser.id());
+                super.update(userTo);
+                LoggedUser.get().update(userTo);
+                status.setComplete();
+                return "redirect:meals";
+            } catch (DataIntegrityViolationException ex) {
+                result.rejectValue("email", "error.user", "user with this email already present in application");
+            }
         }
 
         return "profile";
@@ -77,12 +83,17 @@ public class RootController extends AbstractUserController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String saveRegister(@Valid UserTo userTo, BindingResult result, SessionStatus status, ModelMap model) {
         if (!result.hasErrors()) {
-            super.create(UserUtil.createFromTo(userTo));
-            status.setComplete();
-            return "redirect:login";
-        }
+            try {
+                super.create(UserUtil.createFromTo(userTo));
+                status.setComplete();
 
+                return "redirect:login?message=app.registered";
+            } catch (DataIntegrityViolationException ex) {
+                result.rejectValue("email", "error.user", "user with this email already present in application");
+            }
+        }
         model.addAttribute("register", true);
+
         return "profile";
     }
 }

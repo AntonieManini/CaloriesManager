@@ -22,7 +22,7 @@ public interface ProxyUserRepository extends JpaRepository<User, Integer> {
     List<User> findAll();
 
     @Override
-    User findOne(Integer integer);
+    User findOne(Integer id);
 
     @Transactional
     @Modifying
@@ -30,7 +30,4 @@ public interface ProxyUserRepository extends JpaRepository<User, Integer> {
     int delete(@Param("id") int id);
 
     User getByEmail(String email);
-
-    @Query("SELECT u FROM User LEFT JOIN u.meals WHERE u.id=?1")
-    User getWithMeals(Integer id);
 }

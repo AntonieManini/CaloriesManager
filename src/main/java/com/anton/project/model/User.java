@@ -1,11 +1,18 @@
 package com.anton.project.model;
 
 import com.anton.project.util.UserUtil;
+import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import java.util.Date;
 import java.util.EnumSet;
@@ -17,9 +24,9 @@ import java.util.Set;
  */
 
 @NamedQueries({
-        @NamedQuery(name = User.DELETE, query=""),
-        @NamedQuery(name = User.ALL_SORTED, query = ""),
-        @NamedQuery(name = User.BY_EMAIL, query = "")
+        @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
+        @NamedQuery(name = User.BY_EMAIL, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email=?1"),
+        @NamedQuery(name = User.ALL_SORTED, query = "SELECT DISTINCT(u) FROM User u LEFT JOIN FETCH u.roles ORDER BY u.name, u.email"),
 })
 @Entity
 @Table(name="users")
@@ -115,8 +122,8 @@ public class User extends NamedEntity {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRoles(List<Role> roles) {
+        this.roles = EnumSet.copyOf(roles);
     }
 
     public int getCaloriesPerDay() {
@@ -133,5 +140,17 @@ public class User extends NamedEntity {
 
     public void setMeals(List<UserMeal> meals) {
         this.meals = meals;
+    }
+
+    @Override
+    public String toString() {
+        return "User (" +
+                "id=" + id +
+                ", email=" + email +
+                ", name=" + name +
+                ", enabled=" + enabled +
+                ", roles=" + roles +
+                ", caloriesPerDay=" + caloriesPerDay +
+                ')';
     }
 }

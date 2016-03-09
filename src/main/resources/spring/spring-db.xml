@@ -1,19 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:p="http://www.springframework.org/schema/p" xmlns:jee="http://www.springframework.org/schema/jdbc"
-       xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:jdbc="http://www.springframework.org/schema/jee"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+         http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+         http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
 
+    <jdbc:initialize-database data-source="dataSource" enabled="${database.init}">
+        <jdbc:script location="classpath:db/${jdbc.init}"/>
+        <jdbc:script encoding="utf-8" location="classpath:db/${jdbc.populate}"/>
+    </jdbc:initialize-database>
 
-    <jee:initialize-database>
-        <jee:script location="classpath:db/${jdbc.init}"/>
-        <jee:script encoding="utf-8" location="classpath:db/${jdbc.populate}"/>
-    </jee:initialize-database>
-
-    <context:component-scan base-package="com.anton.project.repository"/>
-
+    <tx:annotation-driven/>
 
     <beans profile="local">
         <context:property-placeholder location="classpath:db/local.properties"/>
@@ -25,7 +29,8 @@
     </beans>
 
     <beans profile="tomcat">
-        <jdbc:jndi-lookup jndi-name="jndi:env:///"    
+        <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/calories"/>
+        <context:property-placeholder location="classpath:db/tomcat.properties" system-properties-mode="OVERRIDE"/>
     </beans>
     
     <beans profile="jpa,datajpa">
@@ -51,13 +56,16 @@
             </property>
         </bean>
 
-        <tx:annotation-driven transaction-manager="transactionManager"/>
-
         <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
               p:entityManagerFactory-ref="entityManagerFactory" />
     </beans>
 
+    <beans profile="jpa">
+        <context:component-scan base-package="com.anton.project.repository.jpa"/>
+    </beans>
+
     <beans profile="datajpa">
+        <context:component-scan base-package="com.anton.project.repository.datajpa"/>
         <jpa:repositories base-package="com.anton.project.repository.datajpa"/>
     </beans>
 </beans>

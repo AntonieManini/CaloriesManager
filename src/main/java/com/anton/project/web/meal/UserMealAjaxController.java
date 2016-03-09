@@ -3,6 +3,7 @@ package com.anton.project.web.meal;
 import com.anton.project.model.UserMeal;
 import com.anton.project.to.UserMealWithExceed;
 import com.anton.project.util.TimeUtil;
+import com.anton.project.util.exception.ValidationException;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +40,7 @@ public class UserMealAjaxController extends AbstractUserMealController {
     @RequestMapping(method = RequestMethod.POST)
     public void updateOrCreate(@Valid UserMeal meal, BindingResult result, SessionStatus status) {
         if (result.hasErrors()) {
+            throw new ValidationException(result);
         }
 
         status.setComplete();

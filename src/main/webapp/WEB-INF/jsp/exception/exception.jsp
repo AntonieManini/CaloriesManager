@@ -1,24 +1,20 @@
 <%@page isErrorPage="true" contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<jsp:include page="../fragments/headTag.jsp"/>
-
+<head>
+    <jsp:include page="../parts/head.jsp"/>
+</head>
 <body>
-<jsp:include page="../fragments/bodyHeader.jsp"/>
+    <jsp:include page="../parts/header.jsp"/>
 
-<div class="jumbotron">
-    <div class="container">
-        <br>
-        <h4>Application error: </h4>
-        <h2>${exception.message}</h2>
-
-        <!--
-<c:forEach items="${exception.stackTrace}" var="stackTrace">
-    ${stackTrace}
-</c:forEach>
--->
+    <div class="jumbotron">
+        <div class="container">
+            <br>
+            <h4>Application error: </h4>
+            <h2>${exception.message}</h2>
+        </div>
     </div>
-</div>
-<jsp:include page="../fragments/footer.jsp"/>
+
+    <jsp:include page="../parts/footer.jsp"/>
 </body>
 </html>

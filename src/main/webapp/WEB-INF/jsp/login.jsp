@@ -32,7 +32,16 @@
 </div>
 <div class="jumbotron">
     <div class="container">
-        Java Technologies
+        <c:if test="${error}">
+            <div class="error">
+                    ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
+            </div>
+        </c:if>
+        <c:if test="${not empty message}">
+            <div class="message">
+                <spring:message code="${message}"/>
+            </div>
+        </c:if>
     </div>
 </div>
 <div class="container">

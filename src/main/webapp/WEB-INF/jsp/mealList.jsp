@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <jsp:include page="parts/head.jsp"/>
@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="webjars/datetimepicker/2.3.4/jquery.datetimepicker.css">
 </head>
 <body>
+<jsp:include page="parts/header.jsp"/>
 <div class="jumbotron">
     <div class="container">
         <div class="shadow">
@@ -113,7 +114,7 @@
     <script type="text/javascript" src="webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
     <script type="text/javascript" src="webjars/datatables/1.10.9/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="webjars/noty/2.3.7/js/noty/packaged/jquery.noty.packaged.min.js"></script>
-    <script type="text/javascript" src="resources/js/datatablesUtil.js"></script>
-    <script type="text/javascript" src="resources/js/mealDatatables.js"></script>
+    <script type="text/javascript" src="resources/js/util.js"></script>
+    <script type="text/javascript" src="resources/js/meals.js"></script>
 </body>
 </html>

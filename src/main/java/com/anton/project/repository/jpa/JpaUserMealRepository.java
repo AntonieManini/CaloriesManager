@@ -60,7 +60,7 @@ public class JpaUserMealRepository implements UserMealRepository {
     }
 
     @Override
-    public Collection<UserMeal> getAll(int userId) {
+    public List<UserMeal> getAll(int userId) {
         return em.createNamedQuery(UserMeal.ALL_SORTED, UserMeal.class)
                 .setParameter("userId", userId)
                 .getResultList();
